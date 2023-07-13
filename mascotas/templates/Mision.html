@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="icon" href="{% static 'img/brandlogito2.0.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
+    <title>Nuestra mision</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+</head>
+<body class="body">
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#opciones">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a href="{% url 'index' %}" class="navbar-brand">
+            <img src="{% static 'img/brandlogito2.0.png' %}" height="80px" width="80px">
+        </a>
+
+        
+        <div class="collapse navbar-collapse" id="opciones">
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav">
+                <!--Aqui van los cambios si esta logeado-->
+                {% if user.is_staff %}
+                <li id="productos" class="nav-item">
+                    <a class="nav-link" href="{% url 'productos' %}">Productos</a>
+                </li>
+
+                <li id="sstock" class="nav-item">
+                    <a class="nav-link" href="{% url 'registroStock' %}">Stock</a>
+                </li>
+                {% else %}
+
+                <li id="productos" class="nav-item">
+                    <a class="nav-link" href="{% url 'productos' %}">Productos</a>
+                </li>
+
+                <li id="carroCompras" class="nav-item">
+                    <a class="nav-link" href="{% url 'carrito' %}">Ir al carrito</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:white">Bienvenid@ {{ user.username }}</a>
+                </li>
+                {% endif %}
+            </ul>
+            {% else %}
+            <ul class="navbar-nav">
+                <li id="mision" class="nav-item">
+                    <a class="nav-link" href="{% url 'mision' %}">Nuestra mision</a>
+                </li>
+
+                <li id="productos" class="nav-item">
+                    <a class="nav-link" href="{% url 'productos' %}">Productos</a>
+                </li>
+
+                <li id="voluntariado" class="nav-item">
+                    <a class="nav-link" href="{% url 'voluntariado' %}">Inscripcion voluntariado</a>
+                </li>
+            </ul>
+            {% endif %}
+            <!--buscador web-->
+            <form class="form-inline mt-2 mt-md-0">
+                <input class="form-control mr-sm-2" type="text" aria-label="Search" onmouseover="colorBuscar(this)" onmouseout="colorBuscarOut(this)">
+                <button class="btn btn-light my-2 my-sm-0" type="submit" id="btnBuscar" onmouseover="colorBotonBuscar(this)" onmouseout="colorBotonBuscarOut(this)">Buscar</button>         
+            </form>
+        </div>
+
+        <div style="padding-right: 30px;">
+            {% if user.is_authenticated %}
+
+            <button class="Btn">
+  
+                <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+                
+                <div class="text"><a style="text-decoration: none; color: black;" href="{% url 'logout' %}">Cerrar sesión</a></div>
+                
+            </button>
+
+
+            {% else %}
+            
+            <button class="Btn">
+  
+                <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+                
+                <div class="text"><a style="text-decoration: none; color: black;" href="{% url 'login' %}">Iniciar sesión</a></div>
+                
+            </button>
+            
+
+            {% endif %}
+        </div>
+
+        <div class="reloj">
+            <p class="tiempo" id="clock"></p>
+        </div>
+
+    </nav>
+
+    <div class="container" style="padding-top: 20px;">
+        <h1>Nuestra misión</h1>
+        <br>
+        <p class="parrafo">
+            En nuestra tienda de venta de accesorios para mascotas, no solo nos enfocamos en ofrecer productos de alta calidad para consentir a nuestras mascotas. 
+            Es por ello que, en colaboración con una fundación sin fines de lucro, destinamos una parte de nuestras ventas para apoyar a esta causa. 
+            Con cada compra en nuestra tienda, no solo estarás consentido a tu mascota, sino que también estarás contribuyendo a una buena causa para ayudar a los animales necesitados.
+        </p>
+        <div align="center">
+            <button id="botonfunda">
+                <img id="imgfunda" class="img-fluid" src="{% static 'img/funda.png' %}" width="250px">
+            </button>
+        </div>
+        <br><br>
+        <h1>Construcción de casas</h1>
+        <br>
+        <p class="parrafo">
+            La construcción de casas para animales callejeros es una forma importante de brindar refugio y protección a aquellos animales que viven en las calles y no tienen hogar. Estas casas pueden ser construidas de diferentes materiales, como madera, plástico o metal, y deben ser lo suficientemente grandes y resistentes para proteger a los animales de los elementos y otros peligros.
+
+Es importante considerar la ubicación de estas casas, colocándolas en áreas seguras y protegidas de los peligros del tráfico y otros riesgos. Además, es importante asegurarse de que las casas sean accesibles para los animales y que estén lo suficientemente elevadas del suelo para evitar la humedad y la suciedad.
+        </p>
+        <div class="container-fluid" align="center">
+            <img class="img-fluid" src="{% static 'img/casass.jpeg' %}" width="500px">
+        </div>
+    </div>
+    <br>
+
+    <div class="container">
+        <h2>Lista de voluntarios:</h2>
+        <br>
+        <a class="a" href="{% url 'listaVoluntarios' %}"><button class="btn" id="btnNaranja">Voluntarios</button></a>
+    </div>
+
+    <br>
+    <div class="container">
+        <h2>Algo para ver:</h2>
+    </div>
+
+    <div class="container" style="padding-top: 20px;">
+        <div class="contvideo">
+            <iframe class="estilo_video" width="560" height="315" src="https://www.youtube.com/embed/Gh-2OR2musQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div> 
+    </div>
+
+
+    <br>
+    <footer class="piepagina">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-lg-2">
+                    <strong style="color: black;">Síguenos</strong>
+                <br><br>
+                <a class="a" href="https://www.facebook.com"><img src="{% static 'img/facebook.png' %}" height="40px" width="40px"><strong class="strong">Facebook</strong></a>   
+                <br><br>
+                <a class="a" href="https://www.instagram.com/"><img src="{% static 'img/instagram.png' %}" height="40px" width="40px"><strong class="strong">Instagram</strong></a>
+                <br><br>
+                <a class="a" href="https://www.twitter.com"><img src="{% static 'img/gorjeo.png' %}" height="40px" width="40px"><strong class="strong">Twitter</strong></a>    
+                </div>
+            
+                <div class="col-lg-1">
+                    <a class="a" href="{% url 'index' %}"><Strong>Inicio</Strong></a>
+                </div>
+                <div class="col-lg-2">
+                    <a class="a" href="{% url 'mision' %}"><Strong>Nuestra misión</Strong></a>
+                </div>
+                <div class="col-lg-1">
+                    <a class="a" href="{% url 'productos' %}"><strong>Productos</strong></a>
+                </div>
+                <div class="col-lg-1">
+                    <a class="a" href="{% url 'voluntariado' %}"><strong>Inscripcion voluntariado</strong></a>
+                </div>
+                <div class="col-lg-2">
+                    <img class="img-fluid" src="{% static 'img/webpay.png' %}" width="350px">
+                </div>
+                <div class="col-lg-2">
+                    <p style="text-align: right; margin-top: 200px; color: whitesmoke;">
+                        @Copyright Derechos reservados 
+                    </p>
+                </div>   
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/funciones.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>  
+</body>
+</html>

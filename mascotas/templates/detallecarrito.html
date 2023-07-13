@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Compra</title>
+    {% load static %}
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#opciones">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a href="{% url 'index' %}" class="navbar-brand">
+            <img src="{% static 'img/brandlogito2.0.png' %}" height="80px" width="80px">
+        </a>
+
+        
+        <div class="collapse navbar-collapse" id="opciones">
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav">
+                <!--Aqui van los cambios si esta logeado-->
+                {% if user.is_staff %}
+                <li id="productos" class="nav-item">
+                    <a class="nav-link" href="{% url 'productos' %}">Productos</a>
+                </li>
+
+                <li id="sstock" class="nav-item">
+                    <a class="nav-link" href="{% url 'registroStock' %}">Stock</a>
+                </li>
+                {% else %}
+
+                <li id="productos" class="nav-item">
+                    <a class="nav-link" href="{% url 'productos' %}">Productos</a>
+                </li>
+
+                <li id="carroCompras" class="nav-item">
+                    <a class="nav-link" href="{% url 'carrito' %}">Ir al carrito</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:white">Bienvenid@ {{ user.username }}</a>
+                </li>
+                {% endif %}
+            </ul>
+            {% else %}
+            <ul class="navbar-nav">
+                <li id="mision" class="nav-item">
+                    <a class="nav-link" href="{% url 'mision' %}">Nuestra mision</a>
+                </li>
+
+                <li id="productos" class="nav-item">
+                    <a class="nav-link" href="{% url 'productos' %}">Productos</a>
+                </li>
+
+                <li id="voluntariado" class="nav-item">
+                    <a class="nav-link" href="{% url 'voluntariado' %}">Inscripcion voluntariado</a>
+                </li>
+            </ul>
+            {% endif %}
+            <!--buscador web-->
+            <form class="form-inline mt-2 mt-md-0">
+                <input class="form-control mr-sm-2" type="text" aria-label="Search" onmouseover="colorBuscar(this)" onmouseout="colorBuscarOut(this)">
+                <button class="btn btn-light my-2 my-sm-0" type="submit" id="btnBuscar" onmouseover="colorBotonBuscar(this)" onmouseout="colorBotonBuscarOut(this)">Buscar</button>         
+            </form>
+        </div>
+
+        <div style="padding-right: 30px;">
+            {% if user.is_authenticated %}
+
+            <button class="Btn">
+  
+                <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+                
+                <div class="text"><a style="text-decoration: none; color: black;" href="{% url 'logout' %}">Cerrar sesión</a></div>
+                
+            </button>
+
+
+            {% else %}
+            
+            <button class="Btn">
+  
+                <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+                
+                <div class="text"><a style="text-decoration: none; color: black;" href="{% url 'login' %}">Iniciar sesión</a></div>
+                
+            </button>
+            
+
+            {% endif %}
+        </div>
+
+        <div class="reloj">
+            <p class="tiempo" id="clock"></p>
+        </div>
+
+    </nav>
+
+    <div class="container">
+        <h3> Detalle de Compra </h3><br><h6>Fecha: {{ fecha }}</h6>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Código Boleta</th>
+                    <th>Código Producto</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prod in productos%}
+                <tr>
+                    <td>{{ prod.id_boleta }}</td>
+                    <td>{{ prod.id_producto }}</td>
+                    <td>{{ prod.cantidad }}</td>
+                    <td>{{ prod.subtotal }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+               
+            <tr><td><h6>Total Compra: {{ total }}</h6></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

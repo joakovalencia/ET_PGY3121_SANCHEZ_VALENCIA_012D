@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="icon" href="{% static 'img/brandlogito2.0.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
+    <title>Huellitas</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+</head>
+<body class="body">
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#opciones">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a href="{% url 'index' %}" class="navbar-brand">
+            <img src="{% static 'img/brandlogito2.0.png' %}" height="80px" width="80px">
+        </a>
+
+        
+        <div class="collapse navbar-collapse" id="opciones">
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav">
+                <!--Aqui van los cambios si esta logeado-->
+                {% if user.is_staff %}
+                <li id="productos" class="nav-item">
+                    <a class="nav-link" href="{% url 'productos' %}">Productos</a>
+                </li>
+
+                <li id="sstock" class="nav-item">
+                    <a class="nav-link" href="{% url 'registroStock' %}">Stock</a>
+                </li>
+                {% else %}
+
+                <li id="productos" class="nav-item">
+                    <a class="nav-link" href="{% url 'productos' %}">Productos</a>
+                </li>
+
+                <li id="carroCompras" class="nav-item">
+                    <a class="nav-link" href="{% url 'carrito' %}">Ir al carrito</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:white">Bienvenid@ {{ user.username }}</a>
+                </li>
+                {% endif %}
+            </ul>
+            {% else %}
+            <ul class="navbar-nav">
+                <li id="mision" class="nav-item">
+                    <a class="nav-link" href="{% url 'mision' %}">Nuestra mision</a>
+                </li>
+
+                <li id="productos" class="nav-item">
+                    <a class="nav-link" href="{% url 'productos' %}">Productos</a>
+                </li>
+
+                <li id="voluntariado" class="nav-item">
+                    <a class="nav-link" href="{% url 'voluntariado' %}">Inscripcion voluntariado</a>
+                </li>
+            </ul>
+            {% endif %}
+            <!--buscador web-->
+            <form class="form-inline mt-2 mt-md-0">
+                <input class="form-control mr-sm-2" type="text" aria-label="Search" onmouseover="colorBuscar(this)" onmouseout="colorBuscarOut(this)">
+                <button class="btn btn-light my-2 my-sm-0" type="submit" id="btnBuscar" onmouseover="colorBotonBuscar(this)" onmouseout="colorBotonBuscarOut(this)">Buscar</button>         
+            </form>
+        </div>
+
+        <div style="padding-right: 30px;">
+            {% if user.is_authenticated %}
+
+            <button class="Btn">
+  
+                <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+                
+                <div class="text"><a style="text-decoration: none; color: black;" href="{% url 'logout' %}">Cerrar sesión</a></div>
+                
+            </button>
+
+
+            {% else %}
+            
+            <button class="Btn">
+  
+                <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+                
+                <div class="text"><a style="text-decoration: none; color: black;" href="{% url 'login' %}">Iniciar sesión</a></div>
+                
+            </button>
+            
+
+            {% endif %}
+        </div>
+
+        <div class="reloj">
+            <p class="tiempo" id="clock"></p>
+        </div>
+
+    </nav>
+
+    <!--carrusel-->
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div style="margin-top: 60px;  width: 1000px; margin-bottom: 60px;">
+                <div id="carrusel1" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carrusel1" data-slide-to="0" class="active"></li>
+                        <li data-target="#carrusel1" data-slide-to="1"></li>
+                        <li data-target="#carrusel1" data-slide-to="2"></li>
+                    </ol>
+        
+                    <div class="carousel-inner" style="border-radius: 7px;">
+                        <div class="carousel-item active">
+                            <img class="id-block w-100" src="{% static 'img/portada1.jpg' %}">
+                        </div>  
+                    
+                        <div class="carousel-item">
+                            <img class="id-block w-100" src="{% static 'img/portada2.jpg' %}">
+                        </div>  
+                    
+                        <div class="carousel-item">
+                            <img class="id-block w-100" src="{% static 'img/portada3.jpg' %}">
+                        </div>  
+                    </div>
+                    <hr>
+                    <!--felchitas de carrusel-->
+                    <a class="carousel-control-prev" href="#carrusel1" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carrusel1" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="container">
+        <br>
+        <h1>Huellitas</h1>
+        <p style="font-size: 20px;">
+            El cuidado de los animales domésticos es una responsabilidad importante que debemos asumir como dueños y cuidadores. 
+            Estos animales dependen completamente de nosotros para su alimentación, salud y bienestar general. 
+            Es importante asegurarnos de proporcionarles un ambiente seguro y limpio, una dieta equilibrada y suficiente agua, y atención médica regular. 
+            Además, debemos brindarles amor, afecto y tiempo de calidad para fortalecer nuestro vínculo con ellos y asegurarnos de que estén felices y saludables.
+        </p>
+    </div>
+    <br>
+    <div class="container-fluid row" style="margin-bottom: 20px;">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5">
+            <h2>La vida de Loki</h2>
+            <p align="justify" class="parrafo">
+                El es loki,nuestro perro símbolo de la tienda, que había sido abandonado en una zona residencial muy transitada. A pesar de ser un perro muy amigable y cariñoso, nadie parecía querer adoptarlo y sufría el frío, la soledad y el hambre en las calles. Un día, una fundación local de rescate de animales lo encontró vagando por la ciudad y decidió ayudarlo. 
+                Después de alimentarlo y llevarlo al veterinario para que recibiera atención médica, lo llevaron a su refugio para animales para que pudiera recibir cuidados y una nueva oportunidad en la vida.
+            </p>
+        </div>
+        <div class="col-lg-1"></div>
+         <div class="col-lg-4">
+            <img class="img-fluid img-thumbnail" src="{% static 'img/Loki.jpeg' %}" width="300px">
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+    <div class="container-fluid row" style="margin-bottom: 20px; margin-top: 20px;">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-4">
+            <img class="img-fluid img-thumbnail" src="{% static 'img/Loki2.jpeg' %}" width="300px">
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5">
+            <p align="justify" class="parrafo">
+                Después de algunas semanas, la fundación publicó su historia en línea y finalmente encontró a una familia amorosa que quería darle un hogar para siempre.
+                Hoy en día, Loki vive felizmente con su nueva familia, que lo ama y lo cuida como si fuera uno de sus propios hijos. Gracias a la bondad y la dedicación de la fundación de rescate, Loki pudo superar su difícil pasado y ahora vive una vida llena de amor y cuidado.
+            </p>
+        </div>
+    </div>
+    
+    <footer class="piepagina">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-lg-2">
+                    <strong style="color: black;">Síguenos</strong>
+                <br><br>
+                <a class="a" href="https://www.facebook.com"><img src="{% static 'img/facebook.png' %}" height="40px" width="40px"><strong class="strong">Facebook</strong></a>   
+                <br><br>
+                <a class="a" href="https://www.instagram.com/"><img src="{% static 'img/instagram.png' %}" height="40px" width="40px"><strong class="strong">Instagram</strong></a>
+                <br><br>
+                <a class="a" href="https://www.twitter.com"><img src="{% static 'img/gorjeo.png' %}" height="40px" width="40px"><strong class="strong">Twitter</strong></a>    
+                </div>
+            
+                <div class="col-lg-1">
+                    <a class="a" href="{% url 'index' %}"><Strong>Inicio</Strong></a>
+                </div>
+                <div class="col-lg-2">
+                    <a class="a" href="{% url 'mision' %}"><Strong>Nuestra misión</Strong></a>
+                </div>
+                <div class="col-lg-1">
+                    <a class="a" href="{% url 'productos' %}"><strong>Productos</strong></a>
+                </div>
+                <div class="col-lg-1">
+                    <a class="a" href="{% url 'voluntariado' %}"><strong>Inscripcion voluntariado</strong></a>
+                </div>
+                <div class="col-lg-2">
+                    <img class="img-fluid" src="{% static 'img/webpay.png' %}" width="350px">
+                </div>
+                <div class="col-lg-2">
+                    <p style="text-align: right; margin-top: 200px; color: whitesmoke;">
+                        @Copyright Derechos reservados 
+                    </p>
+                </div>   
+            </div>
+        </div>
+    </footer>
+    
+    <script src="{% static 'js/funciones.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>  
+</body>
+</html>
